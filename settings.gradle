@@ -1,0 +1,11 @@
+rootProject.name = 'banzzac'
+include 'user-service'
+include 'chat-service'
+include 'message-service'
+include 'websocket-service'
+include 'map-service'
+include 'eureka-server'
+include 'config-server'
+include 'gateway-server'
+include 'core'
+

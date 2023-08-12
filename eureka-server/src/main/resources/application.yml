@@ -1,0 +1,27 @@
+# 포트 설정
+server:
+  port: 8761
+
+spring:
+  application:
+    # serviceId
+    name: eureka-server
+
+eureka:
+  instance:
+    # 도메인네임 및 하위 서브도메인 이름 설정
+    hostname: eureka-server.banzzac.com
+  client:
+    # eureka server의 registry에 등록할지 여부
+    register-with-eureka: false
+    # eureka server에 있는 정보들을 가지고 올지 여부
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+---
+#Local Profile Config
+
+---
+#Develop Profile Config
+

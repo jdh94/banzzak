@@ -50,7 +50,7 @@ project(':core'){
     jar.enabled(true)
 }
 
-project(':user-service'){
+project(':profile-service'){
     dependencies {
         implementation project(':core')
     }

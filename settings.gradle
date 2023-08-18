@@ -1,5 +1,5 @@
 rootProject.name = 'banzzac'
-include 'user-service'
+include 'profile-service'
 include 'chat-service'
 include 'message-service'
 include 'websocket-service'

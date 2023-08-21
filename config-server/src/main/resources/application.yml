@@ -1,0 +1,20 @@
+server:
+  port: 8888
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          #default-label: 깃 주소의 브랜치 이름
+          default-label: master
+
+          #uri: 설정파일이 있는 깃 주소
+          #ex) uri: https://github.com/MangKyu/spring-cloud-config-sample
+          uri: https://git-codecommit.ap-northeast-2.amazonaws.com/v1/repos/banZzak_ConfigServer
+
+          #search-paths: 설정 파일들을 찾을 경로
+          #search-paths: /**
+          #따로 지정할 필요는 없음.
+          username : ghj-at-667154220274
+          password : "{cipher}c97be0d983ded1086f955565bcbc3be48bfabaf8c5d9c950a5659bf0f0fc6b0f78008c7b9f0da69dcca33219f60aa7f6ad3d7d6ed5434506cd12336020d9016a"
+          #ohvQSc2Lqy1dtgEsxtjiLnsjQQDmrW3rbhg+7dzTle4=

@@ -41,6 +41,11 @@ subprojects {
         implementation "org.projectlombok:lombok:1.18.16"
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
+
+        /* starter */
+        implementation 'org.springframework.boot:spring-boot-starter'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
     }
 
     test {
@@ -54,6 +59,12 @@ project(':core'){
     //core모듈에는 main()함수가 존재하지 않음.
     bootJar.enabled(false)
     jar.enabled(true)
+}
+
+project(':auth-server'){
+    dependencies {
+        implementation project(':core')
+    }
 }
 
 project(':profile-service'){

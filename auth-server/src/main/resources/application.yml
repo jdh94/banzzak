@@ -1,3 +1,21 @@
 # 서버 기본 포트
 server:
   port: 8779
+
+# Spring Setting
+spring:
+  profiles:
+    active: local
+  application:
+    name: 'auth-server'
+  config:
+    import: optional:configserver:http://localhost:8888
+
+# Eureka Setting
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
+

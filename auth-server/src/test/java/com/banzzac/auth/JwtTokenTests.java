@@ -35,7 +35,7 @@ public class JwtTokenTests {
         //given
         setUp(60 * 60 * 12, 60 * 60 * 24 * 7, "jwtSecretKey123");
         //when
-        TokenInfo tokenInfo = authenticationService.createTokenInfo("username", 1L);
+        TokenInfo tokenInfo = authenticationService.createTokenInfo(1L);
         //then
         System.out.println(tokenInfo.getAccessToken());
         System.out.println(tokenInfo.getRefreshToken());
@@ -70,7 +70,7 @@ public class JwtTokenTests {
         //given
         //어세스 토큰 유효시간 1초, secret키 정상
         setUp(1, 10, "jwtSecretKey123");
-        TokenInfo tokenInfo = authenticationService.createTokenInfo("username", 1L);
+        TokenInfo tokenInfo = authenticationService.createTokenInfo(1L);
 
         //when
         //4초 대기
@@ -93,7 +93,7 @@ public class JwtTokenTests {
         //given
         //어세스 토큰 유효시간 5초, secret키 정상
         setUp(1, 5, "jwtSecretKey123");
-        TokenInfo tokenInfo = authenticationService.createTokenInfo("username", 1L);
+        TokenInfo tokenInfo = authenticationService.createTokenInfo(1L);
 
         //when
         //4초 대기
@@ -114,7 +114,7 @@ public class JwtTokenTests {
         //given
         //어세스 토큰 유효시간 3초, secret키 정상
         setUp(1, 3, "jwtSecretKey123");
-        TokenInfo tokenInfo = authenticationService.createTokenInfo("username", 1L);
+        TokenInfo tokenInfo = authenticationService.createTokenInfo(1L);
 
         //when
         //4초 대기

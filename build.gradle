@@ -41,11 +41,10 @@ subprojects {
         implementation "org.projectlombok:lombok:1.18.16"
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
-
-        /* starter */
-        implementation 'org.springframework.boot:spring-boot-starter'
+        
+        // Test
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
-        implementation 'org.springframework.boot:spring-boot-starter-web'
+
     }
 
     test {

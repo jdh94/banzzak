@@ -8,11 +8,8 @@ import org.springframework.stereotype.Service;
 import com.banzzac.auth.domain.TokenInfo;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.UnsupportedJwtException;
 import reactor.core.publisher.Mono;
 
 /**
@@ -28,12 +25,12 @@ public class AuthenticationService {
      * AccessToken의 유효 시간
      * 1시간
     */ 
-    private final static int ACCESS_TOKEN_EXPIRATION = 1;
+    private final static int ACCESS_TOKEN_EXPIRATION = 60 * 60;
     /**
      * AccessToken의 유효 시간
      * 12시간
     */ 
-    private final static int REFRESH_TOKEN_EXPIRATION = 60* 60 * 12;
+    private final static int REFRESH_TOKEN_EXPIRATION = 60 * 60 * 12;
     //토큰 암호화 키
     private final static String SECRET = "my_symmetri1c_key";
 

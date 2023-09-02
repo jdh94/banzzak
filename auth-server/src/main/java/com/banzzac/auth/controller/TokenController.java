@@ -34,6 +34,11 @@ public class TokenController {
             .build()));
     }
 
+    /**
+     * 임의 토큰 발급 API
+     * @param request
+     * @return
+     */
     @GetMapping
     Mono<TokenInfo> test(ServerHttpRequest request){
         return Mono.just(authenticationService.createTokenInfo(1L));

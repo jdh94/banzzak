@@ -1,7 +1,7 @@
-package com.crewa.message.repository;
+package com.banzzac.message.repository;
 
-import com.crewa.message.document.ChatMessage;
-import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+//import com.banzzac.message.document.ChatMessage;
+//import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 
-public interface ChatMessageRepository extends ReactiveCrudRepository<ChatMessage, String> {
-}
+//public interface ChatMessageRepository extends ReactiveCrudRepository<ChatMessage, String> {
+//}

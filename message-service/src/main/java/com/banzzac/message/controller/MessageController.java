@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Map;
 
@@ -15,15 +14,16 @@ import java.util.Map;
 //static이하에 있는 /js/**, /css/**, /image/**
 
 @RestController
-@RequestMapping(value = "/boardmng")
+@RequestMapping(value = "/testPage")
 public class MessageController {
 	@Autowired
 	private ChatMessageService chatMessageService;
 
 	//	@AuthenticationPrincipal PrincipalDetail principal
 	@GetMapping({"","/"})
-	public ModelAndView BoardPage() throws Exception {
-		return new ModelAndView("/test.jsp").addObject("test", "test");
+	public void BoardPage() throws Exception {
+		chatMessageService.mongoInsert();
+		System.out.println("enter??");
 	}
 
 }

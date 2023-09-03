@@ -35,7 +35,17 @@ subprojects {
     }
 
     //하위 모듈에서 공통적으로 사용하는 라이브러리
-    dependencies {}
+    dependencies {
+        // Lombok
+        implementation 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+        implementation "org.projectlombok:lombok:1.18.16"
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+        
+        // Test
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    }
 
     test {
         useJUnitPlatform()
@@ -48,6 +58,12 @@ project(':core'){
     //core모듈에는 main()함수가 존재하지 않음.
     bootJar.enabled(false)
     jar.enabled(true)
+}
+
+project(':auth-server'){
+    dependencies {
+        implementation project(':core')
+    }
 }
 
 project(':profile-service'){

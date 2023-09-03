@@ -1,4 +1,5 @@
 rootProject.name = 'banzzac'
+include 'auth-server'
 include 'profile-service'
 include 'chat-service'
 include 'message-service'

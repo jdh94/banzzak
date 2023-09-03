@@ -9,6 +9,15 @@ bootJar{
 }
 
 dependencies {
+    // starter
+    implementation 'org.springframework.boot:spring-boot-starter-webflux:2.6.6'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation 'org.springframework.cloud:spring-cloud-config-client'
+
+    // jwt
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:4.0.3'
+
 }
 
 dependencyManagement {

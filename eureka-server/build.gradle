@@ -1,5 +1,5 @@
 ext {
-    set('springCloudVersion', "2021.0.1")
+    set('springCloudVersion', "2022.0.3")
 }
 
 bootJar{
@@ -10,7 +10,7 @@ bootJar{
 
 dependencies {
     //Starter
-    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server:3.1.1'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
 }
 
 dependencyManagement {

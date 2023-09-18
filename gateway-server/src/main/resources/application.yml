@@ -1,0 +1,39 @@
+# 서버 기본 포트
+server:
+  port: 8090
+
+# Spring Setting
+spring:
+  profiles:
+    active: local
+  application:
+    name: 'gateway-server'
+  cloud:
+    gateway:
+      routes:
+        - id: auth-server
+          uri: lb://AUTH-SERVER
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - JwtTokenValidationFilter
+            - RewritePath=/api/auth/(?<path>.*),/$\{path}
+
+# Eureka Setting
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka
+
+# ocalVariableTableParameterNameDiscoverer 에러 표시 제거
+# https://github.com/spring-projects/spring-framework/issues/29612
+logging:
+  level:
+    org:
+      springframework:
+        core:
+          LocalVariableTableParameterNameDiscoverer : error
+
+

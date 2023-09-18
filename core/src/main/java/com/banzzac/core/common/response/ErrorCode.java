@@ -12,6 +12,9 @@ public enum ErrorCode {
     COMMON_ILLEGAL_STATUS("잘못된 상태값입니다."),
     COMMON_EMPTY_DATA("데이터가 존재하지 않습니다."),
 
+    //Gateway Exception
+    AUTHORIZATION_HEADER_NOT_FOUND("인증 헤더가 존재하지 않습니다."),
+
     // Auth Exception
     AUTH_INVALID_SIGNATURE_JWT("SIGNATURE_KEY값이 유효하지 않습니다."),
     AUTH_MALFORMED_JWT("토큰이 유효하지 않습니다."),
@@ -23,6 +26,10 @@ public enum ErrorCode {
     ;
 
     private final String errorMsg;
+
+    public static ErrorCode getErrorCode(String errorCodeString){
+        return ErrorCode.valueOf(errorCodeString);
+    }
 
     public String getErrorMsg(Object... arg) {
         return String.format(errorMsg, arg);

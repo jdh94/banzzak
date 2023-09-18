@@ -1,13 +1,16 @@
-package com.banzzac.auth;
+package com.banzzac.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import reactivefeign.spring.config.EnableReactiveFeignClients;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class AuthServerApplication {
+@EnableReactiveFeignClients(value = "com.banzzac.gateway.openFeign")
+public class GatewayServerApplication {
+
     public static void main(String[] args) {
-        SpringApplication.run(AuthServerApplication.class, args);
+        SpringApplication.run(GatewayServerApplication.class, args);
     }
 }

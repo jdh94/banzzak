@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '3.1.0'
+        springBootVersion = '3.0.10'
         dependencyManagementVersion = '1.0.11.RELEASE'
         asciidoctorVersion = '1.5.8'
     }
@@ -66,6 +66,12 @@ project(':auth-server'){
     }
 }
 
+project(':gateway-server'){
+    dependencies {
+        implementation project(':core')
+    }
+}
+
 project(':profile-service'){
     dependencies {
         implementation project(':core')
@@ -95,3 +101,5 @@ project(':websocket-service'){
         implementation project(':core')
     }
 }
+
+

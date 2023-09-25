@@ -10,5 +10,5 @@ import reactor.core.publisher.Mono;
 public interface GatewayOpenFeignClient {
 
     @PostMapping("/token/check")
-    Mono<CommonResponse> checkTokenValidation(@RequestHeader("Authorization") String authorization);
+    Mono<CommonResponse> checkTokenValidation(@RequestHeader("Authorization") String authorization, @RequestHeader("Token-Type") String tokenType);
 }

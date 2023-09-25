@@ -1,7 +1,10 @@
 package com.banzzac.auth.service;
 
 import java.util.Date;
+import static com.banzzac.core.common.consts.HeaderConstData.*;
 
+import com.banzzac.auth.enums.TokenType;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Service;
 
@@ -17,19 +20,17 @@ import reactor.core.publisher.Mono;
  */
 @Service
 public class AuthenticationService {
-    //HttpServletRequest의 헤더에서 토큰을 추출할 때 사용
-    private final static String HEADER = "Authorization";
-    //AccessToken의 서두에 붙이는 String값
-    private final static String TOKEN_PREFIX = "Bearer ";
+
     /**
      * AccessToken의 유효 시간
      * 1시간
-    */ 
+     */
     private final static int ACCESS_TOKEN_EXPIRATION = 60 * 60;
+
     /**
      * AccessToken의 유효 시간
      * 12시간
-    */ 
+     */
     private final static int REFRESH_TOKEN_EXPIRATION = 60 * 60 * 12;
     //토큰 암호화 키
     private final static String SECRET = "my_symmetri1c_key";
@@ -51,6 +52,25 @@ public class AuthenticationService {
     }
 
     /**
+     * 토큰 재발급을 위한 메소드
+     * RefreshToken은 기존의 토큰을 그대로 사용
+     * @param refreshToken
+     * @return
+     */
+    public Mono<TokenInfo> createNewAccessToken(String refreshToken) {
+        Claims claims = Jwts.claims();
+        claims.put("id", Jwts.parser()
+                .setSigningKey(SECRET)
+                .parseClaimsJws(refreshToken)
+                .getBody()
+                .get("id").toString());
+        return Mono.just(TokenInfo.builder()
+                .accessToken(TOKEN_PREFIX + generateTokenString(claims, new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION * 1000L)))
+                .refreshToken(refreshToken)
+                .build());
+    }
+
+    /**
      * 클레임, 발행 시간, 유효 시간, 암호화 알고리즘 방식 설정
      * @param claims
      * @param expirationDt
@@ -66,21 +86,25 @@ public class AuthenticationService {
     }
 
     /**
-     * ServerHttpRequest Header에서 토큰 정보를 추출
+     * 토큰 추출
      * @param request
-     * @return String
+     * @return
      */
     public String resolveToken(ServerHttpRequest request){
-        return request.getHeaders().get(HEADER).get(0).replace(TOKEN_PREFIX, "");
+        HttpHeaders headers = request.getHeaders();
+        if(headers.get(TOKEN_TYPE_HEADER).get(0).equals(TokenType.ACCESS.name())){
+            return headers.get(AUTHORIZATION_HEADER).get(0).replace(TOKEN_PREFIX, "");
+        }else {
+            return headers.get(AUTHORIZATION_HEADER).get(0);
+        }
     }
 
     /**
      * 토큰의 대한 유효성 검사 메소드
-     * @param request
      * @param jwtToken
      * @return 유효성 검사 성공 실패 여부
      */
-    public Mono<Boolean> validateToken(ServerHttpRequest request, String jwtToken) {
+    public Mono<Boolean> validateToken(String jwtToken) {
         return Mono.just(!Jwts.parser()
                     .setSigningKey(SECRET)
                     .parseClaimsJws(jwtToken)

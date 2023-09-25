@@ -1,5 +1,7 @@
 package com.banzzac.gateway.filter;
 
+import static com.banzzac.core.common.consts.HeaderConstData.*;
+
 import com.banzzac.core.common.response.CommonResponse;
 import com.banzzac.core.common.response.ErrorCode;
 import com.banzzac.gateway.openFeign.GatewayOpenFeignClient;
@@ -11,6 +13,7 @@ import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -82,22 +85,29 @@ public class JwtTokenValidationFilter extends AbstractGatewayFilterFactory<JwtTo
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
+            String pathUrl = request.getPath().toString();
+            HttpHeaders headers = request.getHeaders();
 
-            log.info("Custom PRE filter : request id -> {}", request.getId());
-            if(request.getHeaders().get("Authorization") == null){
-                return this.onError(response, ErrorCode.AUTHORIZATION_HEADER_NOT_FOUND);
+            //로그인을 제외한 요청은 토큰의 유효성 검사 실시
+            if(pathUrl.equals("")){
+                return chain.filter(exchange);
             }
-            String accessToken = request.getHeaders().get("Authorization").get(0);
 
-            return gatewayOpenFeignClient.checkTokenValidation(accessToken)
+            if(headers.get(AUTHORIZATION_HEADER) == null){
+                return this.onError(response, ErrorCode.AUTHORIZATION_HEADER_NOT_FOUND);
+            }else if(headers.get(TOKEN_TYPE_HEADER) == null){
+                return this.onError(response, ErrorCode.TOKEN_TYPE_HEADER_NOT_FOUND);
+            }
+            String token = headers.get(AUTHORIZATION_HEADER).get(0);
+            String tokenType = headers.get(TOKEN_TYPE_HEADER).get(0);
+
+            return gatewayOpenFeignClient.checkTokenValidation(token, tokenType)
                     .onErrorResume(this::createErrorObject)
                     .flatMap(commonResponse -> {
                         if(commonResponse.getResult() == CommonResponse.Result.FAIL){
                             return this.onError(response, ErrorCode.getErrorCode(commonResponse.getErrorCode()));
                         }else{
-                            return chain.filter(exchange).then(Mono.fromRunnable(() -> {
-                                log.info("Custom POST filter : response code -> {}", response.getStatusCode());
-                            }));
+                            return chain.filter(exchange);
                         }
                     });
         };

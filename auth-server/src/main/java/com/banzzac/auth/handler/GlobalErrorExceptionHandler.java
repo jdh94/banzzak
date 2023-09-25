@@ -1,7 +1,9 @@
-package com.banzzac.auth.config;
+package com.banzzac.auth.handler;
 
+import com.banzzac.auth.service.AuthenticationService;
 import com.banzzac.core.common.response.ErrorCode;
 import io.jsonwebtoken.*;
+import org.apache.http.util.Asserts;
 import org.springframework.boot.autoconfigure.web.WebProperties.Resources;
 import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
@@ -31,10 +33,13 @@ import reactor.core.publisher.Mono;
 @Order(-1)
 public class GlobalErrorExceptionHandler extends AbstractErrorWebExceptionHandler{
 
+    private AuthenticationService authenticationService;
+
     public GlobalErrorExceptionHandler(ErrorAttributes errorAttributes, Resources resources,
-            ApplicationContext applicationContext) {
+            ApplicationContext applicationContext, AuthenticationService authenticationService) {
         super(errorAttributes, resources, applicationContext);
         this.setMessageWriters(ServerCodecConfigurer.create().getWriters());
+        this.authenticationService = authenticationService;
     }
 
     @Override
@@ -46,17 +51,18 @@ public class GlobalErrorExceptionHandler extends AbstractErrorWebExceptionHandle
         Throwable error = getError(request);
         String requestPath = request.exchange().getRequest().getPath().value();
         ErrorCode errorCode = null;
+        //토큰 유효성 검사 중 에러 발생할 경우
         if(requestPath.equals("/token/check")){
             errorCode = getTokenValidationError(error);
         }
-
+        Asserts.notNull(errorCode, "ErrorCode");
         return ServerResponse.status(HttpStatus.BAD_REQUEST)
-            .contentType(MediaType.APPLICATION_JSON)
-            .body(BodyInserters.fromValue(CommonResponse.builder()
-            .result(Result.FAIL)
-            .data(errorCode.getErrorMsg())
-            .errorCode(errorCode.name())
-            .build()));
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(CommonResponse.builder()
+                        .result(Result.FAIL)
+                        .data(errorCode.getErrorMsg())
+                        .errorCode(errorCode.name())
+                        .build()));
     }
 
     /**
@@ -64,13 +70,13 @@ public class GlobalErrorExceptionHandler extends AbstractErrorWebExceptionHandle
      * @param error
      * @return ErrorCode
      */
-    private static ErrorCode getTokenValidationError(Throwable error) {
+    private ErrorCode getTokenValidationError(Throwable error) {
         if (error instanceof SignatureException) {
             return ErrorCode.AUTH_INVALID_SIGNATURE_JWT;
         } else if (error instanceof MalformedJwtException) {
             return ErrorCode.AUTH_INVALID_JWT;
         } else if (error instanceof ExpiredJwtException) {
-            return ErrorCode.AUTH_EXPIRED_JWT;
+            return ErrorCode.AUTH_TOKEN_EXPIRED_JWT;
         } else if (error instanceof UnsupportedJwtException) {
             return ErrorCode.AUTH_UNSUPPORTED_JWT;
         } else if (error instanceof IllegalArgumentException) {

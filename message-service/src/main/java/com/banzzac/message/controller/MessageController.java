@@ -21,9 +21,13 @@ public class MessageController {
 
 	//	@AuthenticationPrincipal PrincipalDetail principal
 	@GetMapping({"","/"})
-	public void BoardPage() throws Exception {
-		chatMessageService.mongoInsert();
-		System.out.println("enter??");
+	public void insertMessages() throws Exception {
+		//chatMessageService.messageInsertService();
+		System.out.println(chatMessageService.saveChatMessage());
+		System.out.println("insert??");
+//		chatMessageService.getMessage();
+		System.out.println(chatMessageService.getMessage().toString());
+		System.out.println("get true??");
 	}
 
 }

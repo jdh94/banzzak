@@ -1,22 +1,32 @@
+
 # 포트 설정
 server:
-  port: 9999
+  port: 9998
 
 spring:
-#  mvc:
-#    view:
-#      prefix: /WEB-INF/jsp/
-#      suffix: .jsp
   data:
     mongodb:
       uri: mongodb+srv://banzzac:banzzac@cluster0.34nxdix.mongodb.net/message?retryWrites=true&w=majority
 #      uri: mongodb+srv://banzzac:banzzac@cluster0.ergif.mongodb.net/BANZZAC?retryWrites=true&w=majority
 
-
 #데이터베이스 이름 : message
 #유저 ID : banzzac
 #유저 password : banzzac
 #클러스터이름 : cluster0
+
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      use-new-id-generator-mappings: false
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+#    datasource:
+#      mongodb:
+#        uri: mongodb+srv://banzzac:banzzac@cluster0.34nxdix.mongodb.net/message?retryWrites=true&w=majority
 
 #spring:
 #  application:
@@ -35,9 +45,7 @@ spring:
 #    service-url:
 #      defaultZone: http://${message.instance.hostname}:${server.port}/message/
 
----
 #Local Profile Config
 
----
 #Develop Profile Config
 

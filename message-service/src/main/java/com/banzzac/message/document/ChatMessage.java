@@ -13,10 +13,8 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "chat_message")
+@Document(collection = "message")
 public class ChatMessage {
-    @Id
     private String messageId;
-    @Field(name = "room_id")
-    private Long roomId;
+    private String roomId;
 }

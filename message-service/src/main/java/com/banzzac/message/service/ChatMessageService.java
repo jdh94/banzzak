@@ -5,10 +5,15 @@ import com.banzzac.message.document.ChatMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 
 public interface ChatMessageService {
-    void mongoInsert();
+    Mono<ChatMessage> messageInsertService();
+
+    Mono<ChatMessage> getMessage();
+
+    Mono<ChatMessage> saveChatMessage();
 }
 
 /*

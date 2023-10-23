@@ -1,21 +1,14 @@
-package com.banzzac.message.document;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Field;
-
-@Builder
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
-public class TestEntity {
-    @Id
-    @Field
-    private String name;
-
-    @Field
-    private int age;
-}
+//package com.banzzac.message.document;
+//
+//import lombok.*;
+//import org.springframework.data.annotation.Id;
+//import org.springframework.data.mongodb.core.mapping.Document;
+//import org.springframework.data.mongodb.core.mapping.Field;
+//
+//@Document(collection = "test") // 컬렉션 이름 지정
+//@Data // 데이터로 사용
+//public class TestEntity {
+//    @Id // id로 사용
+//    private String name;
+//    private int age;
+//}

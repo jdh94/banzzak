@@ -1,10 +1,7 @@
 package com.banzzac.auth.controller;
 
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.banzzac.auth.domain.TokenInfo;
 import com.banzzac.auth.service.AuthenticationService;
@@ -26,12 +23,25 @@ public class TokenController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/check")
-    public Mono<CommonResponse<?>> validateToken(ServerHttpRequest request){
-        return authenticationService.validateToken(request, authenticationService.resolveToken(request))
+    public Mono<CommonResponse> validateToken(ServerHttpRequest request){
+        return authenticationService.validateToken(authenticationService.resolveToken(request))
         .then(Mono.just(CommonResponse.builder()
             .result(Result.SUCCESS)
             .data(null)
             .build()));
+    }
+
+    /**
+     * 토큰 재발급 API
+     * @return
+     */
+    @GetMapping("/refresh")
+    Mono<CommonResponse> publishByRefreshToken(ServerHttpRequest request){
+        return authenticationService.createNewAccessToken(authenticationService.resolveToken(request))
+                .map(tokenInfo -> CommonResponse.builder()
+                        .result(Result.SUCCESS)
+                        .data(tokenInfo)
+                        .build());
     }
 
     /**

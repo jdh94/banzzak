@@ -1,1 +1,33 @@
-dependencies {}
+ext {
+    set('springCloudVersion', "2022.0.3")
+}
+
+bootJar{
+    archivesBaseName = 'gateway-server'
+    archiveFileName = 'gateway-server.jar'
+    archiveVersion = "0.0.1"
+}
+
+dependencies {
+    // Starter
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+    // Reactive OpenFeign
+    implementation 'com.playtika.reactivefeign:feign-reactor-webclient:4.0.0'
+    implementation 'com.playtika.reactivefeign:feign-reactor-cloud:4.0.0'
+    implementation 'com.playtika.reactivefeign:feign-reactor-spring-configuration:4.0.0'
+
+    //json mapping
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+
+    //Mac Os의 경우 추가
+    implementation 'io.netty:netty-resolver-dns-native-macos:4.1.80.Final:osx-aarch_64'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}

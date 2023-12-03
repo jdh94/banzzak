@@ -8,4 +8,16 @@ spring:
       prefix: /WEB-INF/views/
       suffix: .jsp
 
-
+  kafka:
+    consumer:
+      #카프카 서버정보
+      bootstrap-servers: localhost:9092
+      #설정할 그룹아이디
+      group-id: dev-topic-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
